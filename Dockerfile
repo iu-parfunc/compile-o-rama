@@ -49,12 +49,17 @@ RUN cd /tmp/ && \
 # ======================================================================
 ## LLVM and CLANG 3.9
 RUN wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
+    # Ubuntu 16.04 is Xenial:
     apt-add-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-3.9 main" && \
     apt-get update && \
     apt-get -y install clang-3.9 llvm-3.9
 
 
+
 # TODO: .NET core
+# TODO: manticore
+# TODO: multimlton
+# TODO: Java, Scala
 
 
 # Add your compilers here (or inherit from this with FROM):
