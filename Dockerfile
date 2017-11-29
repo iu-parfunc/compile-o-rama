@@ -32,17 +32,17 @@ RUN mkdir /tmp/rust && cd /tmp/rust && \
   cd / && rm -rf /tmp/rust
 
 
-# (4) Racket 
+# (4) Racket to /racket
 # ======================================================================
 ENV RACKET_VER 6.7
 # This gets 6.3, too old:
 # RUN apt-get install -y racket
 RUN cd /tmp/ && \
-  wget --progress=dot:giga http://download.racket-lang.org/releases/6.7/installers/racket-6.7-x86_64-linux.sh && \
-  chmod +x racket-6.7-x86_64-linux.sh && \
-  ./racket-6.7-x86_64-linux.sh --in-place --dest /racket/ && \
+  wget --progress=dot:giga http://download.racket-lang.org/releases/${RACKET_VER}/installers/racket-${RACKET_VER}-x86_64-linux.sh && \
+  chmod +x racket-${RACKET_VER}-x86_64-linux.sh && \
+  ./racket-${RACKET_VER}-x86_64-linux.sh --in-place --dest /racket/ && \
   ln -s /racket/bin/* /usr/local/bin/ && \
-  rm -rf racket-6.7-x86_64-linux.sh
+  rm -rf racket-${RACKET_VER}-x86_64-linux.sh
 
 # (5) Clang, LLVM
 # ======================================================================
