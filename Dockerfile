@@ -1,20 +1,21 @@
 # Name this with the tag "compile-o-rama"
 
 
-# (1) Haskell, GHC 8.0.2: we bake this in.
+# (1) Haskell, GHC 8.0.2: we bake this in (goes in /opt/ghc)
 # ======================================================================
 FROM fpco/stack-build:lts-9.14
 
-# (2) Mlton, Ocaml, gcc
+# (2) Mlton, Ocaml, gcc to /usr/bin
 # ======================================================================
 RUN apt-get update && apt-get -y install mlton ocaml-native-compilers gcc time
 
-# (3) Chez Scheme 9.4
+# (3) Chez Scheme to /usr/bin/scheme
 # ======================================================================
 # TODO: Check SHA like Nix does:
-RUN cd / && wget -nv https://github.com/cisco/ChezScheme/archive/v9.4.tar.gz && \
-    tar xf v9.4.tar.gz && rm -f v9.4.tar.gz
-RUN cd /ChezScheme-9.4/ && ./configure && time make install
+ENV CHEZ_VER 9.4
+RUN cd / && wget -nv https://github.com/cisco/ChezScheme/archive/v${CHEZ_VER}.tar.gz && \
+    tar xf v${CHEZ_VER}.tar.gz && rm -f v${CHEZ_VER}.tar.gz
+RUN cd /ChezScheme-${CHEZ_VER}/ && ./configure && time make install
 
 # ADD ./deps /tree-velocity/BintreeBench/deps
 
@@ -23,11 +24,11 @@ RUN cd /ChezScheme-9.4/ && ./configure && time make install
 ENV RUST_VER 1.12.1
 # Having problems on hive, disabling rustup: [2016.11.02]
 # RUN deps/rustup.sh --yes --revision=1.12.0
-# wget --progress=dot:giga https://static.rust-lang.org/dist/rust-1.12.1-x86_64-unknown-linux-gnu.tar.gz && \
+# wget --progress=dot:giga https://static.rust-lang.org/dist/rust-${RUST_VER}-x86_64-unknown-linux-gnu.tar.gz && \
 RUN mkdir /tmp/rust && cd /tmp/rust && \
-  curl -O https://static.rust-lang.org/dist/rust-1.12.1-x86_64-unknown-linux-gnu.tar.gz && \
-  tar xf rust-1.12.1-x86_64-unknown-linux-gnu.tar.gz && \
-  cd rust-1.12.1-x86_64-unknown-linux-gnu && \
+  curl -O https://static.rust-lang.org/dist/rust-${RUST_VER}-x86_64-unknown-linux-gnu.tar.gz && \
+  tar xf rust-${RUST_VER}-x86_64-unknown-linux-gnu.tar.gz && \
+  cd rust-${RUST_VER}-x86_64-unknown-linux-gnu && \
   ./install.sh && \
   cd / && rm -rf /tmp/rust
 
