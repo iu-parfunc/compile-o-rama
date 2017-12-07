@@ -1,15 +1,24 @@
+
 # Name this with the tag "compile-o-rama"
 
-
-# (1) Haskell, GHC 8.0.2: we bake this in (goes in /opt/ghc)
+# (*) Haskell, GHC 8.0.2: we bake this in (goes in /opt/ghc)
 # ======================================================================
 FROM fpco/stack-build:lts-9.14
 
-# (2) Mlton, Ocaml, gcc to /usr/bin
+# (*) Mlton, Ocaml, gcc to /usr/bin
 # ======================================================================
 RUN apt-get update && apt-get -y install mlton ocaml-native-compilers gcc time
 
-# (3) Chez Scheme to /usr/bin/scheme
+
+# (*) Clang, LLVM
+# ======================================================================
+## LLVM and CLANG 3.9
+RUN wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
+    apt-add-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-3.9 main" && \
+    apt-get update && \
+    apt-get -y install clang-3.9 llvm-3.9
+
+# (*) Chez Scheme to /usr/bin/scheme
 # ======================================================================
 # TODO: Check SHA like Nix does:
 ENV CHEZ_VER 9.4
@@ -19,7 +28,7 @@ RUN cd /ChezScheme-${CHEZ_VER}/ && ./configure && time make install
 
 # ADD ./deps /tree-velocity/BintreeBench/deps
 
-# (4) Rust 
+# (*) Rust 
 # ======================================================================
 ENV RUST_VER 1.12.1
 # Having problems on hive, disabling rustup: [2016.11.02]
@@ -33,26 +42,15 @@ RUN mkdir /tmp/rust && cd /tmp/rust && \
   cd / && rm -rf /tmp/rust
 
 
-# (4) Racket to /racket
+# (*) Racket to /racket
 # ======================================================================
-ENV RACKET_VER 6.7
-# This gets 6.3, too old:
-# RUN apt-get install -y racket
+ENV RACKET_VER 6.11
 RUN cd /tmp/ && \
   wget --progress=dot:giga http://download.racket-lang.org/releases/${RACKET_VER}/installers/racket-${RACKET_VER}-x86_64-linux.sh && \
   chmod +x racket-${RACKET_VER}-x86_64-linux.sh && \
   ./racket-${RACKET_VER}-x86_64-linux.sh --in-place --dest /racket/ && \
   ln -s /racket/bin/* /usr/local/bin/ && \
   rm -rf racket-${RACKET_VER}-x86_64-linux.sh
-
-# (5) Clang, LLVM
-# ======================================================================
-## LLVM and CLANG 3.9
-RUN wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
-    # Ubuntu 16.04 is Xenial:
-    apt-add-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-3.9 main" && \
-    apt-get update && \
-    apt-get -y install clang-3.9 llvm-3.9
 
 
 
