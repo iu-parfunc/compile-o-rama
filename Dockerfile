@@ -44,14 +44,17 @@ RUN mkdir /tmp/rust && cd /tmp/rust && \
 
 # (*) Racket to /racket
 # ======================================================================
-ENV RACKET_VER 6.11
-RUN cd /tmp/ && \
-  wget --progress=dot:giga http://download.racket-lang.org/releases/${RACKET_VER}/installers/racket-${RACKET_VER}-x86_64-linux.sh && \
-  chmod +x racket-${RACKET_VER}-x86_64-linux.sh && \
-  ./racket-${RACKET_VER}-x86_64-linux.sh --in-place --dest /racket/ && \
-  ln -s /racket/bin/* /usr/local/bin/ && \
-  rm -rf racket-${RACKET_VER}-x86_64-linux.sh
+RUN add-apt-repository ppa:plt/racket && apt-get update && \
+    apt-get -y install racket=6.10.1-1~xenial1~ppa1
 
+# Or can do it this way:
+# ENV RACKET_VER 6.11
+# RUN cd /tmp/ && \
+#   wget --progress=dot:giga http://download.racket-lang.org/releases/${RACKET_VER}/installers/racket-${RACKET_VER}-x86_64-linux.sh && \
+#   chmod +x racket-${RACKET_VER}-x86_64-linux.sh && \
+#   ./racket-${RACKET_VER}-x86_64-linux.sh --in-place --dest /racket/ && \
+#   ln -s /racket/bin/* /usr/local/bin/ && \
+#   rm -rf racket-${RACKET_VER}-x86_64-linux.sh
 
 
 # TODO: .NET core
