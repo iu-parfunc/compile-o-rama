@@ -44,6 +44,7 @@ RUN mkdir /tmp/rust && cd /tmp/rust && \
 
 # (*) Racket to /racket
 # ======================================================================
+# Xenial is Ubuntu 16.04.  Getting newer currently needs Zesty/Artful.
 RUN add-apt-repository ppa:plt/racket && apt-get update && \
     apt-get -y install racket=6.10.1-1~xenial1~ppa1
 
