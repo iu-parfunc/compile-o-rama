@@ -8,18 +8,18 @@ FROM compile-o-rama:0.1
 
 # For "lockfile" command:
 # RUN apt install -y procmail
-
-# Hack for lockfile command:
-RUN apt-get install -y lockfile-progs && \
-    ln -s /usr/bin/lockfile-create /usr/bin/lockfile 
+# Above is overkill.  Other hack for lockfile command:
+RUN apt-get install -y lockfile-progs 
+ADD scripts/lockfile /usr/bin/lockfile
 
 # OCR: Open community runtime
 # ======================================================================
 RUN mkdir /ocr && \
-    git clone --depth 1 -b OCRv1.2.0 https://xstack.exascale-tech.com/git/public/ocr.git /ocr/ocr
+    git clone --depth 1 -b OCRv1.2.0 https://xstack.exascale-tech.com/git/public/ocr.git /ocr/lib
 
-RUN cd /ocr/ocr/ocr && \
+RUN cd /ocr/lib/ocr && \
     OCR_TYPE=x86 make all -j 
 
-# RUN cd /ocr/ocr/ocr && \
-#     OCR_TYPE=x86 make install
+RUN export OCR_INSTALL=/usr/; \
+    cd /ocr/lib/ocr && \
+    OCR_TYPE=x86 make install

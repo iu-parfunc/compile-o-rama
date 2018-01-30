@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -x
+
+# A symlink is insufficient here (it looks at its own name):
+lockfile-create $1
