@@ -40,3 +40,14 @@ RUN mkdir /tmp/hpx5 && cd /tmp/hpx5 && \
 ENV LD_LIBRARY_PATH /hpx5/lib
 ENV INCLUDE /hpx5/include
 ENV PKG_CONFIG_PATH /hpx5/lib/pkgconfig
+
+# CHAPEL
+# =====================================================================
+ENV CHPL_VER 1.16.0
+RUN mkdir /tmp/chapel && cd /tmp/chapel && \
+  wget -nv https://github.com/chapel-lang/chapel/releases/download/${CHPL_VER}/chapel-${CHPL_VER}-1.tar.gz && \
+  tar xf chapel-${CHPL_VER}-1.tar.gz && rm -f chapel-${CHPL_VER}-1.tar.gz && \
+  cd chapel-${CHPL_VER} && \
+  ./configure && make && make install
+
+
