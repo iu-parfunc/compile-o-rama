@@ -64,3 +64,16 @@ RUN mkdir /tmp/charm && cd /tmp/charm && \
   
 
 
+# Argobots
+# ====================================================================
+RUN mkdir /tmp/pmodels && cd /tmp/pmodels && \
+  git clone https://github.com/pmodels/argobots.git && \
+  cd argobots && ./autogen.sh && \
+  ./configure --prefix=/argobots && \
+  make -j && \
+  make install && \
+  cd / && rm -rf /tmp/pmodels
+
+ENV LD_LIBRARY_PATH /argobots/lib:$LD_LIBRARY_PATH
+ENV INCLUDE /argobots/include:$INCLUDE
+ENV PKG_CONFIG_PATH /argobots/lib/pkgconfig:$PKG_CONFIG_PATH
