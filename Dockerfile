@@ -66,3 +66,68 @@ RUN add-apt-repository ppa:plt/racket && apt-get update && \
 
 # Add your compilers here (or inherit from this with FROM):
 # ------------------------------------------------------------
+
+
+# ==================================================================================================
+# DISTRIBUTED-MEMORY LANGUAGE SUPPORT
+# ==================================================================================================
+#
+# What's below adds support for distributed, multi-node compilers and
+# runtimes.
+
+# For "lockfile" command:
+# RUN apt install -y procmail
+# Above is overkill.  Other hack for lockfile command:
+RUN apt-get install -y lockfile-progs 
+ADD scripts/lockfile /usr/bin/lockfile
+
+# OCR: Open community runtime
+# ======================================================================
+RUN mkdir /ocr && \
+    git clone --depth 1 -b OCRv1.2.0 https://xstack.exascale-tech.com/git/public/ocr.git /ocr/lib
+
+RUN cd /ocr/lib/ocr && \
+    OCR_TYPE=x86 make all -j 
+
+RUN export OCR_INSTALL=/usr/; \
+    cd /ocr/lib/ocr && \
+    OCR_TYPE=x86 make install
+
+
+# HPX-5:
+# =====================================================================
+ENV HPX5_VER 4.1.0
+RUN mkdir /tmp/hpx5 && cd /tmp/hpx5 && \
+  wget -nv http://hpx.crest.iu.edu/release/hpx-${HPX5_VER}.tar.gz && \
+  tar xf hpx-${HPX5_VER}.tar.gz && rm -f hpx-${HPX5_VER}.tar.gz && \
+  cd hpx-${HPX5_VER}/hpx && \
+  ./configure --enable-parallel-config --prefix=/hpx5 && \
+  make -j && \
+  make install && \
+  cd / && rm -rf /tmp/hpx5
+
+ENV LD_LIBRARY_PATH /hpx5/lib
+ENV INCLUDE /hpx5/include
+ENV PKG_CONFIG_PATH /hpx5/lib/pkgconfig
+
+# CHAPEL
+# =====================================================================
+ENV CHPL_VER 1.16.0
+RUN mkdir /tmp/chapel && cd /tmp/chapel && \
+  wget -nv https://github.com/chapel-lang/chapel/releases/download/${CHPL_VER}/chapel-${CHPL_VER}-1.tar.gz && \
+  tar xf chapel-${CHPL_VER}-1.tar.gz && rm -f chapel-${CHPL_VER}-1.tar.gz && \
+  cd chapel-${CHPL_VER} && \
+  ./configure && make && make install && \
+  cd / && rm -rf /tmp/chapel
+
+
+# CHARM++
+# ====================================================================
+ENV CHARM_VER 6.8.2
+RUN mkdir /tmp/charm && cd /tmp/charm && \
+  wget -nv http://charm.cs.illinois.edu/distrib/charm-${CHARM_VER}.tar.gz && \
+  tar xf charm-${CHARM_VER}.tar.gz && rm -f charm-${CHARM_VER}.tar.gz && \
+  cd charm-v${CHARM_VER} && \
+  ./build charm++ multicore-linux-x86_64 --with-production -j8 --destination=/charm && \
+  cd / && rm -rf /tmp/charm /charm/tmp/
+  
