@@ -124,6 +124,8 @@ RUN mkdir /tmp/chapel && cd /tmp/chapel && \
 # CHARM++
 # ====================================================================
 ENV CHARM_VER 6.8.2
+# Installs in /charm/:
+ENV CHARM_HOME /charm
 RUN mkdir /tmp/charm && cd /tmp/charm && \
   wget -nv http://charm.cs.illinois.edu/distrib/charm-${CHARM_VER}.tar.gz && \
   tar xf charm-${CHARM_VER}.tar.gz && rm -f charm-${CHARM_VER}.tar.gz && \
