@@ -1,7 +1,7 @@
 # This Makefile just bundles together some convenient commands that
 # you may want to run.
 
-VERSION=0.2
+VERSION=0.2.1
 TAG=compile-o-rama
 
 docker:
