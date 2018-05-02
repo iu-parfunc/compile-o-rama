@@ -130,4 +130,4 @@ RUN mkdir /tmp/charm && cd /tmp/charm && \
   tar xf charm-${CHARM_VER}.tar.gz && rm -f charm-${CHARM_VER}.tar.gz && \
   cd charm-v${CHARM_VER} && \
   ./build charm++ multicore-linux-x86_64 --with-production -j8 --destination=${CHARM_HOME} && \
-  cd / && rm -rf /tmp/charm ${CHARM_HOME}/tmp
+  cd / && rm -rf /tmp/charm
