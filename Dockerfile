@@ -131,5 +131,4 @@ RUN mkdir /tmp/charm && cd /tmp/charm && \
   wget -nv http://charm.cs.illinois.edu/distrib/charm-${CHARM_VER}.tar.gz && \
   tar xf charm-${CHARM_VER}.tar.gz && rm -f charm-${CHARM_VER}.tar.gz && \
   cd charm-v${CHARM_VER} && \
-  ./build charm++ multicore-linux-x86_64 --with-production -j8 --destination=${CHARM_HOME} && \
-  cd / && rm -rf /tmp/charm
+  ./build charm++ multicore-linux-x86_64 --with-production -j8 --destination=${CHARM_HOME}
