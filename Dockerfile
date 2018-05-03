@@ -46,7 +46,7 @@ RUN mkdir /tmp/rust && cd /tmp/rust && \
 # ======================================================================
 # Xenial is Ubuntu 16.04.  Getting newer currently needs Zesty/Artful.
 RUN add-apt-repository ppa:plt/racket && apt-get update && \
-    apt-get -y install racket=6.10.1-1~xenial1~ppa1
+    apt-get -y install racket=6.12+ppa1-1~xenial2
 
 # Or can do it this way:
 # ENV RACKET_VER 6.11
@@ -83,32 +83,34 @@ ADD scripts/lockfile /usr/bin/lockfile
 
 # OCR: Open community runtime
 # ======================================================================
-RUN mkdir /ocr && \
-    git clone --depth 1 -b OCRv1.2.0 https://xstack.exascale-tech.com/git/public/ocr.git /ocr/lib
-
-RUN cd /ocr/lib/ocr && \
-    OCR_TYPE=x86 make all -j 
-
-RUN export OCR_INSTALL=/usr/; \
-    cd /ocr/lib/ocr && \
-    OCR_TYPE=x86 make install
+# As of May 3, 2018, the link to ocr repo is dead. Remove it for now.
+#RUN mkdir /ocr && \
+#    git clone --depth 1 -b OCRv1.2.0 https://xstack.exascale-tech.com/git/public/ocr.git /ocr/lib
+#
+#RUN cd /ocr/lib/ocr && \
+#    OCR_TYPE=x86 make all -j 
+#
+#RUN export OCR_INSTALL=/usr/; \
+#    cd /ocr/lib/ocr && \
+#    OCR_TYPE=x86 make install
 
 
 # HPX-5:
 # =====================================================================
-ENV HPX5_VER 4.1.0
-RUN mkdir /tmp/hpx5 && cd /tmp/hpx5 && \
-  wget -nv http://hpx.crest.iu.edu/release/hpx-${HPX5_VER}.tar.gz && \
-  tar xf hpx-${HPX5_VER}.tar.gz && rm -f hpx-${HPX5_VER}.tar.gz && \
-  cd hpx-${HPX5_VER}/hpx && \
-  ./configure --enable-parallel-config --prefix=/hpx5 && \
-  make -j && \
-  make install && \
-  cd / && rm -rf /tmp/hpx5
+# link to HPX-5 is also gone.
+#ENV HPX5_VER 4.1.0
+#RUN mkdir /tmp/hpx5 && cd /tmp/hpx5 && \
+#  wget -nv http://hpx.crest.iu.edu/release/hpx-${HPX5_VER}.tar.gz && \
+#  tar xf hpx-${HPX5_VER}.tar.gz && rm -f hpx-${HPX5_VER}.tar.gz && \
+#  cd hpx-${HPX5_VER}/hpx && \
+#  ./configure --enable-parallel-config --prefix=/hpx5 && \
+#  make -j && \
+#  make install && \
+#  cd / && rm -rf /tmp/hpx5
 
-ENV LD_LIBRARY_PATH /hpx5/lib
-ENV INCLUDE /hpx5/include
-ENV PKG_CONFIG_PATH /hpx5/lib/pkgconfig
+#ENV LD_LIBRARY_PATH /hpx5/lib
+#ENV INCLUDE /hpx5/include
+#ENV PKG_CONFIG_PATH /hpx5/lib/pkgconfig
 
 # CHAPEL
 # =====================================================================
