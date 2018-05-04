@@ -30,7 +30,7 @@ RUN cd /ChezScheme-${CHEZ_VER}/ && ./configure && time make install
 
 # (*) Rust 
 # ======================================================================
-ENV RUST_VER 1.12.1
+ENV RUST_VER 1.25.0
 # Having problems on hive, disabling rustup: [2016.11.02]
 # RUN deps/rustup.sh --yes --revision=1.12.0
 # wget --progress=dot:giga https://static.rust-lang.org/dist/rust-${RUST_VER}-x86_64-unknown-linux-gnu.tar.gz && \
