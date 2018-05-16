@@ -57,9 +57,29 @@ RUN add-apt-repository ppa:plt/racket && apt-get update && \
 #   ln -s /racket/bin/* /usr/local/bin/ && \
 #   rm -rf racket-${RACKET_VER}-x86_64-linux.sh
 
+# (*) Manticore to /usr/local/bin
+# ======================================================================
+RUN cd /usr/local && \
+    mkdir smlnj && cd smlnj && \
+    wget http://smlnj.cs.uchicago.edu/dist/working/110.81/config.tgz && \
+    tar -xvf config.tgz && \
+    rm -rf config.tgz && \
+    apt-get update && \
+    apt-get -y install wget lynx curl && \
+    apt-get -y install gcc-multilib g++-multilib && \
+    apt-get -y install lib32ncurses5 lib32z1 && \
+    config/install.sh && \
+    cd /tmp && \
+    git clone https://github.com/ManticoreProject/manticore.git && \
+    cd manticore && \
+    autoheader -Iconfig && autoconf -Iconfig && \
+    export SMLNJ_CMD=/usr/local/smlnj/bin/sml && \
+    ./configure && \
+    make install -j && \
+    cd / && rm -rf /tmp/manticore
+
 
 # TODO: .NET core
-# TODO: manticore
 # TODO: multimlton
 # TODO: Java, Scala
 
