@@ -57,7 +57,7 @@ RUN add-apt-repository ppa:plt/racket && apt-get update && \
 #   ln -s /racket/bin/* /usr/local/bin/ && \
 #   rm -rf racket-${RACKET_VER}-x86_64-linux.sh
 
-# (*) Manticore to /usr/local/bin
+# (*) Manticore to /usr/local/bin and /manticore
 # ======================================================================
 RUN cd /usr/local && \
     mkdir smlnj && cd smlnj && \
@@ -69,14 +69,14 @@ RUN cd /usr/local && \
     apt-get -y install gcc-multilib g++-multilib && \
     apt-get -y install lib32ncurses5 lib32z1 && \
     config/install.sh && \
-    cd /tmp && \
+    cd / && \
     git clone https://github.com/ManticoreProject/manticore.git && \
     cd manticore && \
     autoheader -Iconfig && autoconf -Iconfig && \
     export SMLNJ_CMD=/usr/local/smlnj/bin/sml && \
     ./configure && \
     make install -j && \
-    cd / && rm -rf /tmp/manticore
+    cd /
 
 
 # TODO: .NET core
