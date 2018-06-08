@@ -152,3 +152,13 @@ RUN mkdir /charm && cd /charm && \
   tar xf charm-${CHARM_VER}.tar.gz && rm -f charm-${CHARM_VER}.tar.gz && \
   cd charm-v${CHARM_VER} && \
   ./build charm++ multicore-linux-x86_64 --with-production -j8 --destination=${CHARM_HOME}
+
+# X10
+# ====================================================================
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
+ENV X10_VER 2.6.1
+ENV X10_HOME /usr/local/x10
+RUN mkdir $X10_HOME && cd $X10_HOME && \
+  wget -nv https://iweb.dl.sourceforge.net/project/x10/x10/${X10_VER}/x10-${X10_VER}_linux_x86_64.tgz && \
+  tar xf x10-${X10_VER}_linux_x86_64.tgz && rm -f x10-${X10_VER}_linux_x86_64.tgz
+
